@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laxmiputra Malde — Cloud Support / DevOps Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14;
+    --bg-raise:#0d1219;
+    --panel:#10161f;
+    --panel-border:#1c2531;
+    --panel-border-hover:#2a3644;
+    --text-primary:#e6edf3;
+    --text-secondary:#7d8a9a;
+    --text-dim:#4b5563;
+    --green:#3fb950;
+    --green-dim:rgba(63,185,80,0.12);
+    --amber:#d29922;
+    --blue:#58a6ff;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --sans:'Inter', -apple-system, sans-serif;
+    --radius:6px;
+    --maxw:1040px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  body{
+    background:var(--bg);
+    color:var(--text-primary);
+    font-family:var(--sans);
+    line-height:1.6;
+    min-height:100vh;
+    background-image:
+      linear-gradient(var(--panel-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--panel-border) 1px, transparent 1px);
+    background-size:64px 64px;
+    background-attachment:fixed;
+    background-position:center -1px;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+
+  /* ---------- status bar ---------- */
+  .statusbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,20,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--panel-border);
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-secondary);
+  }
+  .statusbar .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:40px;
+  }
+  .statusbar .left{display:flex; align-items:center; gap:8px;}
+  .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 0 var(--green-dim);
+    animation:pulse 2.2s infinite;
+    flex-shrink:0;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(63,185,80,0.45);}
+    70%{box-shadow:0 0 0 6px rgba(63,185,80,0);}
+    100%{box-shadow:0 0 0 0 rgba(63,185,80,0);}
+  }
+  .statusbar .right{display:flex; gap:18px;}
+  .statusbar .right span{color:var(--text-dim);}
+  .statusbar .right b{color:var(--text-secondary); font-weight:500;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:100px 0 80px; border-bottom:1px solid var(--panel-border);}
+  .terminal{
+    background:var(--bg-raise);
+    border:1px solid var(--panel-border);
+    border-radius:var(--radius);
+    max-width:560px;
+    overflow:hidden;
+    margin-bottom:40px;
+  }
+  .terminal-head{
+    display:flex; gap:6px; align-items:center;
+    padding:9px 12px;
+    border-bottom:1px solid var(--panel-border);
+  }
+  .terminal-head span{width:9px; height:9px; border-radius:50%; background:var(--panel-border-hover);}
+  .terminal-head .fname{
+    margin-left:8px; font-family:var(--mono); font-size:11px; color:var(--text-dim);
+  }
+  .terminal-body{
+    padding:16px 18px 20px;
+    font-family:var(--mono); font-size:13.5px; color:var(--text-secondary);
+  }
+  .terminal-body .prompt{color:var(--green);}
+  .terminal-body .cmd{color:var(--text-primary);}
+  #typed-out{color:var(--text-secondary);}
+  .caret{
+    display:inline-block; width:7px; height:15px; background:var(--green);
+    margin-left:2px; vertical-align:-2px;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero h1{
+    font-family:var(--mono);
+    font-size:clamp(32px, 5vw, 52px);
+    font-weight:700;
+    letter-spacing:-0.5px;
+    margin-bottom:10px;
+  }
+  .hero .role{
+    font-size:17px; color:var(--text-secondary); font-weight:500;
+    margin-bottom:4px;
+  }
+  .hero .loc{
+    font-family:var(--mono); font-size:12.5px; color:var(--text-dim);
+    margin-bottom:28px;
+  }
+  .hero .loc .dot{margin-right:6px;}
+  .btnrow{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; font-weight:500;
+    padding:10px 18px; border-radius:var(--radius);
+    border:1px solid var(--panel-border-hover);
+    transition:border-color .15s, background .15s, transform .15s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.primary{background:var(--green); color:#04120a; border-color:var(--green);}
+  .btn.primary:hover{background:#4ec860;}
+  .btn.ghost{background:transparent; color:var(--text-primary);}
+  .btn.ghost:hover{border-color:var(--blue); color:var(--blue);}
+
+  /* ---------- section shell ---------- */
+  section.block{padding:64px 0; border-bottom:1px solid var(--panel-border);}
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--green);
+    display:flex; align-items:center; gap:8px; margin-bottom:10px;
+  }
+  .eyebrow::before{content:'#'; color:var(--text-dim);}
+  h2.title{font-size:26px; font-weight:800; margin-bottom:34px; letter-spacing:-0.3px;}
+
+  /* ---------- services (skills) ---------- */
+  .svc-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:1px;
+    background:var(--panel-border);
+    border:1px solid var(--panel-border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .svc{
+    background:var(--panel);
+    padding:18px 20px;
+    transition:background .15s;
+  }
+  .svc:hover{background:var(--bg-raise);}
+  .svc-top{display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+  .svc-name{font-weight:600; font-size:14.5px;}
+  .svc-status{
+    margin-left:auto; font-family:var(--mono); font-size:10.5px;
+    color:var(--green); text-transform:uppercase; letter-spacing:0.5px;
+  }
+  .svc-desc{font-size:13px; color:var(--text-secondary);}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:flex; flex-direction:column; gap:14px;}
+  .proj{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    transition:border-color .15s, transform .15s;
+  }
+  .proj:hover{border-color:var(--panel-border-hover); transform:translateY(-2px);}
+  .proj-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:8px;}
+  .proj-name{font-size:16.5px; font-weight:700;}
+  .badge{
+    font-family:var(--mono); font-size:10.5px; padding:3px 8px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:0.4px; white-space:nowrap;
+  }
+  .badge.deployed{background:var(--green-dim); color:var(--green);}
+  .badge.stable{background:rgba(88,166,255,0.12); color:var(--blue);}
+  .proj-desc{color:var(--text-secondary); font-size:14px; margin-bottom:14px;}
+  .tags{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px;}
+  .tag{
+    font-family:var(--mono); font-size:11px; color:var(--text-secondary);
+    border:1px solid var(--panel-border-hover); padding:3px 9px; border-radius:4px;
+  }
+  .proj-link{font-family:var(--mono); font-size:12.5px; color:var(--blue); display:inline-flex; gap:5px; align-items:center;}
+  .proj-link:hover{text-decoration:underline;}
+
+  /* ---------- log (education/certs) ---------- */
+  .log{font-family:var(--mono); font-size:13.5px;}
+  .log-row{
+    display:grid; grid-template-columns:90px 1fr;
+    gap:18px; padding:14px 0; border-bottom:1px solid var(--panel-border);
+  }
+  .log-row:last-child{border-bottom:none;}
+  .log-time{color:var(--text-dim);}
+  .log-msg{color:var(--text-primary);}
+  .log-msg .tag-inline{color:var(--green); margin-right:6px;}
+  .log-sub{color:var(--text-secondary); font-size:12.5px; margin-top:2px; font-family:var(--sans);}
+
+  /* ---------- contact ---------- */
+  .contact-panel{
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:var(--radius);
+    padding:36px; display:flex; flex-wrap:wrap; gap:28px; justify-content:space-between; align-items:center;
+  }
+  .contact-panel h3{font-size:20px; margin-bottom:6px;}
+  .contact-panel p{color:var(--text-secondary); font-size:14px;}
+  .contact-links{display:flex; gap:12px; flex-wrap:wrap;}
+
+  footer{padding:28px 0; font-family:var(--mono); font-size:11.5px; color:var(--text-dim); text-align:center;}
+
+  @media(max-width:600px){
+    .hero{padding:70px 0 50px;}
+    section.block{padding:46px 0;}
+    .contact-panel{padding:26px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="statusbar">
+    <div class="wrap">
+      <div class="left">
+        <span class="dot"></span>
+        <span>laxmiputra-malde / portfolio</span>
+      </div>
+      <div class="right">
+        <span>uptime <b>100%</b></span>
+        <span>region <b>Bengaluru, IN</b></span>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="terminal">
+        <div class="terminal-head">
+          <span></span><span></span><span></span>
+          <span class="fname">lucky@portfolio:~</span>
+        </div>
+        <div class="terminal-body">
+          <span class="prompt">$</span> <span class="cmd">whoami</span><br>
+          <span id="typed-out"></span><span class="caret"></span>
+        </div>
+      </div>
+
+      <h1>Laxmiputra "Lucky" Malde</h1>
+      <div class="role">Cloud Support Engineer · DevOps · Technical Support — Fresher</div>
+      <div class="loc"><span class="dot" style="width:6px;height:6px;"></span>Bengaluru, Karnataka</div>
+
+      <div class="btnrow">
+        <a class="btn primary" href="mailto:laxmiputra51@gmail.com">Contact me →</a>
+        <a class="btn ghost" href="https://github.com/laxmiputra51-hub" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn ghost" href="https://linkedin.com/in/laxmiputra-malde" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <div class="wrap">
+      <div class="eyebrow">monitored-services</div>
+      <h2 class="title">Stack health check</h2>
+      <div class="svc-grid" id="svc-grid"></div>
+    </div>
+  </section>
+
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="eyebrow">deployments</div>
+      <h2 class="title">Projects</h2>
+      <div class="proj-grid" id="proj-grid"></div>
+    </div>
+  </section>
+
+  <section class="block" id="log">
+    <div class="wrap">
+      <div class="eyebrow">system-log</div>
+      <h2 class="title">Education &amp; certifications</h2>
+      <div class="log" id="log-list"></div>
+    </div>
+  </section>
+
+  <section class="block" style="border-bottom:none;" id="contact">
+    <div class="wrap">
+      <div class="eyebrow">connect</div>
+      <div class="contact-panel">
+        <div>
+          <h3>Open to Cloud Support, DevOps &amp; Technical Support roles</h3>
+          <p>laxmiputra51@gmail.com · Bengaluru, Karnataka</p>
+        </div>
+        <div class="contact-links">
+          <a class="btn primary" href="mailto:laxmiputra51@gmail.com">Email</a>
+          <a class="btn ghost" href="https://github.com/laxmiputra51-hub" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn ghost" href="https://linkedin.com/in/laxmiputra-malde" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>// last deployed manually — edit the DATA object below to update</footer>
+
+<script>
+// ------------------------------------------------------------------
+// EDIT THIS DATA to update content. Replace repoUrl placeholders with
+// your real repo links once you're ready.
+// ------------------------------------------------------------------
+const SKILLS = [
+  {name:"AWS", desc:"EC2, S3, VPC, IAM, CloudWatch, ELB"},
+  {name:"Docker", desc:"Images, Docker Compose, multi-container apps"},
+  {name:"Nginx", desc:"Static hosting, reverse proxy config"},
+  {name:"CI/CD", desc:"GitHub Actions pipelines"},
+  {name:"Linux / Bash", desc:"Shell scripting, WSL2/Ubuntu environment"},
+  {name:"Git", desc:"Version control, GitHub workflows"},
+];
+
+const PROJECTS = [
+  {
+    name:"CloudInsight",
+    status:"deployed",
+    desc:"Real-time cloud resource monitoring dashboard with live charts and socket-based updates.",
+    tags:["React","Express","Socket.IO","SQLite","Chart.js"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+  {
+    name:"StreamVault",
+    status:"deployed",
+    desc:"Multi-container, Netflix-style streaming application orchestrated with Docker Compose.",
+    tags:["Docker Compose","Multi-container"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+  {
+    name:"CI/CD Pipeline with GitHub Actions",
+    status:"stable",
+    desc:"Automated build-test-deploy pipeline configured end-to-end with GitHub Actions.",
+    tags:["GitHub Actions","CI/CD"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+  {
+    name:"Dockerized Multi-Container Application",
+    status:"stable",
+    desc:"Multi-service app composed and networked with Docker Compose.",
+    tags:["Docker","Docker Compose"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+  {
+    name:"Web App Hosting on AWS EC2",
+    status:"stable",
+    desc:"Deployed and hosted a web application on an EC2 instance with basic networking setup.",
+    tags:["AWS","EC2"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+  {
+    name:"Dockerized Nginx Static Website",
+    status:"stable",
+    desc:"Static site containerized and served via a custom Nginx configuration.",
+    tags:["Docker","Nginx"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+  {
+    name:"AWS Troubleshooting Lab",
+    status:"stable",
+    desc:"A set of simulated support-ticket scenarios for practicing real AWS troubleshooting.",
+    tags:["AWS","Support scenarios"],
+    repoUrl:"https://github.com/laxmiputra51-hub"
+  },
+];
+
+const LOG = [
+  {time:"2025", msg:"MCA — VTU Centre for PG Studies (CPGS), Kalaburagi", sub:""},
+  {time:"2025", msg:"Cloud Computing Internship — KGTTI, Kalaburagi", sub:""},
+  {time:"2025", msg:"Cloud Computing Foundation Certificate — PrepInsta / SBI Foundation", sub:"ID: PI/2025-26/263"},
+  {time:"2022", msg:"B.Sc. Computer Science — Government College (Autonomous), Kalaburagi", sub:""},
+  {time:"—", msg:"NCC B &amp; C Certificates", sub:""},
+  {time:"—", msg:"TCS Youth Program — Participant", sub:""},
+];
+
+// ------------------------------------------------------------------
+// Render
+// ------------------------------------------------------------------
+document.getElementById('svc-grid').innerHTML = SKILLS.map(s => `
+  <div class="svc">
+    <div class="svc-top">
+      <span class="dot" style="width:6px;height:6px;"></span>
+      <span class="svc-name">${s.name}</span>
+      <span class="svc-status">operational</span>
+    </div>
+    <div class="svc-desc">${s.desc}</div>
+  </div>
+`).join('');
+
+document.getElementById('proj-grid').innerHTML = PROJECTS.map(p => `
+  <div class="proj">
+    <div class="proj-head">
+      <span class="proj-name">${p.name}</span>
+      <span class="badge ${p.status}">${p.status}</span>
+    </div>
+    <div class="proj-desc">${p.desc}</div>
+    <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    <a class="proj-link" href="${p.repoUrl}" target="_blank" rel="noopener">View on GitHub →</a>
+  </div>
+`).join('');
+
+document.getElementById('log-list').innerHTML = LOG.map(l => `
+  <div class="log-row">
+    <div class="log-time">${l.time}</div>
+    <div>
+      <div class="log-msg"><span class="tag-inline">›</span>${l.msg}</div>
+      ${l.sub ? `<div class="log-sub">${l.sub}</div>` : ``}
+    </div>
+  </div>
+`).join('');
+
+// Hero typing animation
+const line2 = "Cloud infrastructure. Real systems, real hands-on debugging.";
+const el = document.getElementById('typed-out');
+let i = 0;
+function type(){
+  if(i <= line2.length){
+    el.textContent = line2.slice(0, i);
+    i++;
+    setTimeout(type, 28);
+  }
+}
+type();
+</script>
+
+</body>
+</html>
